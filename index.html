@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendário Estratégico 2026 — Porto Fazenda Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#f7f2e9; --card:#ffffff; --dark:#2a1f0f; --mid:#5c4a36;
+  --muted:#9a8878; --light:#f2e8d5; --gold:#c8872a;
+  --strip:#e0d4c0; --border:#ede5d5;
+  --s-ok-bg:#e6f4ec;  --s-ok-c:#1f6640;  --s-ok-d:#2d8a55;
+  --s-urg-bg:#fde8e4; --s-urg-c:#b83322; --s-urg-d:#d44433;
+  --s-atn-bg:#fef3d8; --s-atn-c:#9a6010; --s-atn-d:#d4920f;
+  --s-enc-bg:#e8e3db; --s-enc-c:#7a7264; --s-enc-d:#a09588;
+}
+body { background:var(--bg); font-family:'DM Sans',sans-serif; color:var(--dark); }
+header { background:var(--dark); padding:28px 28px 22px; border-bottom:3px solid var(--gold); position:sticky; top:0; z-index:100; }
+.eyebrow { font-size:10px; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); font-weight:600; margin-bottom:5px; }
+.htitle { font-family:'Cormorant Garamond',serif; font-size:clamp(24px,3.5vw,36px); font-weight:700; color:var(--light); line-height:1.1; }
+.htitle em { color:var(--gold); font-style:italic; }
+.hsub { font-size:11px; color:var(--muted); margin-top:5px; }
+.hrow { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.stats { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.sp { border-radius:10px; padding:9px 14px; text-align:center; min-width:76px; background:#3a2a18; }
+.sp.g{background:#1a3528;} .sp.r{background:#3d1a14;} .sp.gr{background:#2e2820;} .sp.go{background:#2e240e;} .sp.tl{background:#1c3530;}
+.sv { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:24px; line-height:1; color:var(--light); }
+.sp.g .sv{color:#82c495;} .sp.r .sv{color:#f5a090;} .sp.gr .sv{color:#9a8870;} .sp.go .sv{color:#e8c060;} .sp.tl .sv{color:#a8e8d0;}
+.sl { font-size:9px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; color:var(--light); opacity:.7; margin-top:3px; }
+.edit-toggle { margin-top:16px; font-family:'DM Sans',sans-serif; font-size:12px; font-weight:600; padding:8px 18px; border-radius:20px; border:1.5px solid rgba(200,135,42,.4); cursor:pointer; background:transparent; color:var(--gold); transition:all .2s; white-space:nowrap; }
+.edit-toggle:hover { background:rgba(200,135,42,.15); }
+.edit-toggle.active { background:var(--gold); color:var(--dark); border-color:var(--gold); }
+.legend { background:#f0e8d8; padding:8px 28px; display:flex; gap:18px; flex-wrap:wrap; align-items:center; border-bottom:1px solid var(--strip); font-size:11px; color:var(--mid); }
+.legend .ll { font-size:10px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.06em; }
+.filters { background:#faf5ec; padding:11px 28px; display:flex; gap:6px; flex-wrap:wrap; align-items:center; border-bottom:1px solid var(--strip); }
+.filters .fl { font-size:11px; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin-right:2px; }
+.sep { width:1px; height:20px; background:var(--strip); margin:0 4px; }
+.btn { font-family:'DM Sans',sans-serif; font-size:11px; font-weight:400; padding:5px 12px; border-radius:20px; border:none; cursor:pointer; background:#f0e8d8; color:var(--mid); transition:all .15s; }
+.btn:hover{background:#e4d8c5;} .btn.active{background:var(--dark);color:var(--light);font-weight:600;}
+main { padding:22px 28px 80px; }
+.mg { margin-bottom:30px; }
+.mh { display:flex; align-items:baseline; gap:12px; border-bottom:2px solid var(--dark); padding-bottom:7px; margin-bottom:12px; }
+.mn { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:25px; color:var(--dark); }
+.mc { font-size:12px; color:var(--muted); }
+.ma { margin-left:auto; font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; letter-spacing:.04em; }
+.ma.urg{background:#fde8e4;color:#b83322;} .ma.atn{background:#fef3d8;color:#9a6010;}
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(285px,1fr)); gap:10px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; display:flex; transition:box-shadow .2s,transform .2s; position:relative; }
+.card:hover{box-shadow:0 8px 28px rgba(42,31,15,.13);transform:translateY(-2px);}
+.card.enc{background:#f7f4ef;opacity:.72;} .card.urg{border-color:#f5b8b0;box-shadow:0 3px 12px rgba(194,59,42,.1);} .card.atn{border-color:#f5dfa0;}
+.cs{width:5px;flex-shrink:0;}
+.cs.ok{background:var(--s-ok-d);} .cs.urg{background:var(--s-urg-d);} .cs.atn{background:var(--s-atn-d);} .cs.enc{background:var(--s-enc-d);}
+.cb{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:7px;}
+.ct{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.cin{display:flex;align-items:flex-start;gap:8px;}
+.cemi{font-size:19px;flex-shrink:0;margin-top:1px;}
+.cname{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;color:var(--dark);line-height:1.2;}
+.card.enc .cname{color:#8a7a68;}
+.csub{font-size:10px;color:var(--muted);line-height:1.35;margin-top:2px;}
+.cr{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.stars{display:flex;gap:2px;} .star{font-size:11px;} .star.on{color:var(--gold);} .star.off{color:#d9cfc0;}
+.badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.badge.ok{background:var(--s-ok-bg);color:var(--s-ok-c);} .badge.urg{background:var(--s-urg-bg);color:var(--s-urg-c);}
+.badge.atn{background:var(--s-atn-bg);color:var(--s-atn-c);} .badge.enc{background:var(--s-enc-bg);color:var(--s-enc-c);}
+.badge.nacional{background:#2a1f0f;color:#f0e6cc;} .badge.estadual{background:#1a3350;color:#c8dff5;}
+.badge.municipal{background:#3d2b1f;color:#f5dfc0;} .badge.comemorativa{background:#3b2a45;color:#e8d0f8;}
+.cmid{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.dchip{font-weight:600;font-size:11px;color:var(--dark);background:#f2ebe0;padding:3px 8px;border-radius:6px;}
+.wday{font-size:11px;color:#7a6a58;}
+.ponte{font-size:10px;color:#1f6640;background:#e0f5e8;padding:2px 7px;border-radius:20px;font-weight:500;}
+.cbot{display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap;}
+.dl{display:flex;gap:10px;font-size:10px;color:var(--muted);} .dl strong{color:var(--mid);}
+.enctxt{font-size:10px;color:#9a8878;font-style:italic;}
+.cnotes{font-size:10px;color:#7a6a58;background:#f7f2e9;border-radius:6px;padding:4px 8px;font-style:italic;border-left:2px solid var(--gold);}
+.csh{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:16px 0 9px;padding-left:4px;border-left:3px solid #1c3530;display:flex;align-items:center;gap:8px;}
+.citycard{background:#f0f9f5;border:1px solid #b8e8d4;border-radius:10px;overflow:hidden;display:flex;transition:box-shadow .2s,transform .2s;position:relative;}
+.citycard:hover{box-shadow:0 6px 20px rgba(28,53,48,.1);transform:translateY(-2px);}
+.citycard.enc{opacity:.65;background:#f4f4f0;border-color:#d0d4d0;} .citycard.urg{border-color:#f5b8b0;} .citycard.atn{border-color:#f5dfa0;}
+.cstrip{width:4px;background:#2d8a6e;flex-shrink:0;}
+.citycard.enc .cstrip{background:#a0b8b0;} .citycard.urg .cstrip{background:var(--s-urg-d);} .citycard.atn .cstrip{background:var(--s-atn-d);}
+.ccbody{flex:1;padding:10px 13px;display:flex;flex-direction:column;gap:5px;}
+.cctop{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+.ccname{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:14px;color:#1c3530;}
+.ccuf{font-size:10px;color:#5a8878;background:#d4f0e4;padding:1px 6px;border-radius:10px;font-weight:600;margin-left:5px;}
+.ccrole{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:#2d7a64;background:#c8edde;padding:2px 7px;border-radius:20px;}
+.ccmid{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
+.ccdate{font-weight:600;font-size:11px;color:#1c3530;background:#d4f0e4;padding:3px 8px;border-radius:6px;}
+.ccwd{font-size:10px;color:#5a7870;} .ccpop{font-size:10px;color:#7a9890;}
+.ccdl{display:flex;gap:10px;font-size:10px;color:#5a8878;} .ccdl strong{color:#2d6a58;}
+.ccright{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.fnote{background:var(--dark);border-radius:10px;padding:15px 17px;display:flex;gap:12px;align-items:flex-start;margin-top:22px;}
+.fni{font-size:20px;flex-shrink:0;}
+.fnt{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;color:var(--light);margin-bottom:5px;}
+.fnb{font-size:11px;color:var(--muted);line-height:1.6;} .fnb strong{color:var(--gold);}
+.empty{text-align:center;padding:60px 20px;font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--muted);font-style:italic;}
+.loading{text-align:center;padding:80px 20px;font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--muted);font-style:italic;}
+
+/* Edit mode actions on cards */
+.card-actions { display:none; position:absolute; top:8px; right:8px; gap:4px; }
+.edit-mode .card-actions { display:flex; }
+.card-act-btn { width:26px; height:26px; border-radius:6px; border:none; cursor:pointer; font-size:13px; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+.card-act-btn.edit { background:#e8f0fe; color:#1a56db; }
+.card-act-btn.edit:hover { background:#1a56db; color:#fff; }
+.card-act-btn.del { background:#fde8e4; color:#b83322; }
+.card-act-btn.del:hover { background:#b83322; color:#fff; }
+
+/* Section add buttons */
+.sec-add { font-size:11px; font-weight:600; padding:4px 10px; border-radius:20px; border:1.5px dashed var(--muted); background:transparent; color:var(--muted); cursor:pointer; transition:all .15s; display:none; margin-left:auto; }
+.edit-mode .sec-add { display:inline-flex; align-items:center; gap:4px; }
+.sec-add:hover { border-color:var(--gold); color:var(--gold); }
+
+/* FAB */
+.fab-wrap { position:fixed; bottom:28px; right:28px; display:none; flex-direction:column; gap:10px; align-items:flex-end; z-index:200; }
+.edit-mode ~ .fab-wrap, body.edit-mode .fab-wrap { display:flex; }
+.fab { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; padding:11px 20px; border-radius:30px; border:none; cursor:pointer; box-shadow:0 4px 18px rgba(0,0,0,.18); transition:all .2s; }
+.fab.primary { background:var(--gold); color:var(--dark); }
+.fab.primary:hover { background:#b87820; transform:scale(1.04); }
+.fab.secondary { background:var(--dark); color:var(--light); }
+.fab.secondary:hover { background:#3a2a18; transform:scale(1.04); }
+
+/* Modal */
+.modal-overlay { position:fixed; inset:0; background:rgba(42,31,15,.55); z-index:300; display:none; align-items:center; justify-content:center; padding:16px; backdrop-filter:blur(2px); }
+.modal-overlay.open { display:flex; }
+.modal { background:#fff; border-radius:16px; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.3); }
+.modal-head { background:var(--dark); padding:20px 24px 16px; border-radius:16px 16px 0 0; }
+.modal-title { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:22px; color:var(--light); }
+.modal-sub { font-size:11px; color:var(--muted); margin-top:3px; }
+.modal-body { padding:20px 24px; display:flex; flex-direction:column; gap:14px; }
+.fg { display:flex; flex-direction:column; gap:5px; }
+.fg-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.fl { font-size:11px; font-weight:600; color:var(--mid); text-transform:uppercase; letter-spacing:.05em; }
+.fi { font-family:'DM Sans',sans-serif; font-size:13px; padding:8px 12px; border:1.5px solid var(--border); border-radius:8px; color:var(--dark); background:#fff; transition:border-color .15s; width:100%; }
+.fi:focus { outline:none; border-color:var(--gold); }
+select.fi { cursor:pointer; }
+textarea.fi { resize:vertical; min-height:72px; }
+.star-pick { display:flex; gap:6px; }
+.star-pick button { font-size:20px; background:none; border:none; cursor:pointer; transition:transform .1s; opacity:.35; }
+.star-pick button.on { opacity:1; }
+.star-pick button:hover { transform:scale(1.2); }
+.modal-foot { padding:16px 24px 20px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid var(--border); }
+.mbtn { font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600; padding:9px 22px; border-radius:20px; border:none; cursor:pointer; transition:all .15s; }
+.mbtn.save { background:var(--gold); color:var(--dark); }
+.mbtn.save:hover { background:#b87820; }
+.mbtn.cancel { background:#f0e8d8; color:var(--mid); }
+.mbtn.cancel:hover { background:#e4d8c5; }
+.mbtn.danger { background:#fde8e4; color:#b83322; }
+.mbtn.danger:hover { background:#b83322; color:#fff; }
+.mbtn:disabled { opacity:.5; cursor:not-allowed; }
+
+/* Confirm delete */
+.del-confirm { background:#fff8f7; border:1.5px solid #f5b8b0; border-radius:10px; padding:14px; font-size:13px; color:var(--dark); display:none; }
+.del-confirm.show { display:block; }
+
+@media(max-width:600px){
+  header,.legend,.filters,main{padding-left:14px;padding-right:14px;}
+  .grid{grid-template-columns:1fr;}
+  .fg-row{grid-template-columns:1fr;}
+  .fab-wrap{bottom:16px;right:16px;}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hrow">
+    <div>
+      <div class="eyebrow">Porto Fazenda Hotel · Alfenas, MG</div>
+      <div class="htitle">Calendário Estratégico <em>2026</em></div>
+      <div class="hsub">Feriados nacionais, estaduais, municipais, aniversários de cidades âncora e datas comemorativas</div>
+    </div>
+    <button class="edit-toggle" id="editToggle" onclick="toggleEditMode()">✏️ Editar</button>
+  </div>
+  <div class="stats" id="stats"></div>
+</header>
+<div class="legend">
+  <span class="ll">Prazos:</span>
+  <span>📋 Produção = D-60</span>
+  <span>📣 Ativação = D-45</span>
+  <span>★★★ = Alta prioridade</span>
+  <span>⚡ Urgente = janela de ativação encerrada</span>
+</div>
+<div class="filters" id="filters"></div>
+<main id="main"></main>
+
+<div class="fab-wrap" id="fabWrap">
+  <button class="fab secondary" onclick="openModal('cidade', null)">🏙️ Nova cidade</button>
+  <button class="fab primary" onclick="openModal('feriado', null)">＋ Nova data</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal" id="modal">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Nova data</div>
+      <div class="modal-sub" id="modalSub"></div>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+    <div class="modal-foot">
+      <button class="mbtn danger" id="modalDelBtn" style="display:none;margin-right:auto" onclick="confirmDelete()">🗑️ Excluir</button>
+      <button class="mbtn cancel" onclick="closeModal()">Cancelar</button>
+      <button class="mbtn save" id="modalSaveBtn" onclick="saveModal()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://fcakvhznbppxfsabbfdv.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZjYWt2aHpuYnBweGZzYWJiZmR2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkyOTYwMDQsImV4cCI6MjA5NDg3MjAwNH0.ONYVOfG0uVTWDu6IL8pDmnDiUB0VtXGXRCSBE_GC5hs';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const MONTHS = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const WDAYS  = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const SM = {
+  ok:       { label:'✓ OK',      cls:'ok'  },
+  urgente:  { label:'⚡ Urgente', cls:'urg' },
+  atencao:  { label:'⏳ Atenção', cls:'atn' },
+  encerrado:{ label:'Encerrado', cls:'enc' },
+};
+
+let feriados = [], cidades = [], editMode = false, aTag = 'all', aMon = 'all';
+let modalCtx = null; // { type, id }
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+function dt(dateStr) { return new Date(dateStr + 'T12:00:00'); }
+
+function calcStatus(eventDateStr) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const ev  = dt(eventDateStr);
+  const prd = new Date(ev); prd.setDate(prd.getDate() - 60);
+  const atv = new Date(ev); atv.setDate(atv.getDate() - 45);
+  if (ev < today) return 'encerrado';
+  if (today >= atv) return 'urgente';
+  if (today >= prd) return 'atencao';
+  return 'ok';
+}
+
+function fmtD(eventDateStr, offset) {
+  const d = new Date(dt(eventDateStr)); d.setDate(d.getDate() - offset);
+  return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+}
+
+function genLabel(dateStr) {
+  const d = dt(dateStr);
+  const ms = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+  return `${String(d.getDate()).padStart(2,'0')} ${ms[d.getMonth()]}`;
+}
+
+function getMonth(dateStr)  { return MONTHS[dt(dateStr).getMonth()]; }
+function getWday(dateStr)   { return WDAYS[dt(dateStr).getDay()]; }
+function stars(n) { return [1,2,3].map(i=>`<span class="star ${i<=n?'on':'off'}">★</span>`).join(''); }
+function badge(label,cls)   { return `<span class="badge ${cls}">${label}</span>`; }
+function typeTag(f) { return f.type === 'comemorativa' ? 'comemorativa' : 'feriado'; }
+
+// ── Data ─────────────────────────────────────────────────────────────────────
+async function loadData() {
+  document.getElementById('main').innerHTML = '<div class="loading">Carregando…</div>';
+  const [{ data: f, error: e1 }, { data: c, error: e2 }] = await Promise.all([
+    sb.from('feriados').select('*').order('event_date'),
+    sb.from('cidades').select('*').order('event_date'),
+  ]);
+  if (e1 || e2) { document.getElementById('main').innerHTML = '<div class="empty">Erro ao carregar dados. Verifique a conexão.</div>'; return; }
+  feriados = (f || []).map(x => ({ ...x, status: calcStatus(x.event_date) }));
+  cidades  = (c || []).map(x => ({ ...x, status: calcStatus(x.event_date) }));
+  renderAll();
+}
+
+// ── Filters ───────────────────────────────────────────────────────────────────
+function getFF() {
+  return feriados.filter(f => {
+    const t = aTag==='all'
+      || (aTag==='ativo'     && f.status!=='encerrado')
+      || (aTag==='urgente'   && (f.status==='urgente'||f.status==='atencao'))
+      || (aTag==='feriado'   && typeTag(f)==='feriado')
+      || (aTag==='comemorativa' && f.type==='comemorativa');
+    const m = aMon==='all' || getMonth(f.event_date)===aMon;
+    return t && m;
+  });
+}
+
+function getFC() {
+  return cidades.filter(c => {
+    const t = aTag==='all'
+      || aTag==='aniversario'
+      || (aTag==='ativo'   && c.status!=='encerrado')
+      || (aTag==='urgente' && (c.status==='urgente'||c.status==='atencao'));
+    const m = aMon==='all' || getMonth(c.event_date)===aMon;
+    return t && m;
+  });
+}
+
+// ── Render ────────────────────────────────────────────────────────────────────
+function renderAll() { renderStats(); renderFilters(); renderMain(); syncEditMode(); }
+
+function renderStats() {
+  const urg  = feriados.filter(f=>f.status==='urgente'||f.status==='atencao').length;
+  const act  = feriados.filter(f=>f.status!=='encerrado').length;
+  const enc  = feriados.filter(f=>f.status==='encerrado').length;
+  const ms3  = feriados.filter(f=>f.stars===3&&f.status!=='encerrado').length;
+  const ca   = cidades.filter(c=>c.status!=='encerrado').length;
+  const urgc = cidades.filter(c=>c.status==='urgente'||c.status==='atencao').length;
+  document.getElementById('stats').innerHTML = `
+    <div class="sp"><div class="sv">${feriados.length}</div><div class="sl">Feriados/datas</div></div>
+    <div class="sp g"><div class="sv">${act}</div><div class="sl">Ativos</div></div>
+    <div class="sp r"><div class="sv">${urg+urgc}</div><div class="sl">Ação imediata</div></div>
+    <div class="sp gr"><div class="sv">${enc}</div><div class="sl">Encerrados</div></div>
+    <div class="sp go"><div class="sv">${ms3}</div><div class="sl">Alta prior. ★★★</div></div>
+    <div class="sp tl"><div class="sv">${ca}</div><div class="sl">Cidades ativas</div></div>`;
+}
+
+function renderFilters() {
+  const tags = [
+    {k:'all',l:'Todos'},{k:'ativo',l:'Ativos'},{k:'urgente',l:'⚡ Urgentes'},
+    {k:'feriado',l:'Feriados'},{k:'comemorativa',l:'Comemorativas'},{k:'aniversario',l:'🏙️ Cidades âncora'},
+  ];
+  const all   = [...feriados,...cidades];
+  const months = ['all',...MONTHS.filter(m=>all.some(x=>getMonth(x.event_date)===m))];
+  const tb = tags.map(t=>`<button class="btn${aTag===t.k?' active':''}" onclick="setTag('${t.k}')">${t.l}</button>`).join('');
+  const mb = months.map(m=>{const l=m==='all'?'Todos':m.substring(0,3);return`<button class="btn${aMon===m?' active':''}" onclick="setMon('${m}')">${l}</button>`;}).join('');
+  document.getElementById('filters').innerHTML = `<span class="fl">Filtrar:</span>${tb}<div class="sep"></div>${mb}`;
+}
+
+function renderCard(f) {
+  const sm  = SM[f.status];
+  const tl  = {nacional:'Nacional',estadual:'Estadual',municipal:'Municipal',comemorativa:'Comemorativa'}[f.type]||f.type;
+  const dl  = f.status==='encerrado'
+    ? `<span class="enctxt">Janela encerrada</span>`
+    : `<div class="dl"><span>📋 <strong>${fmtD(f.event_date,60)}</strong></span><span>📣 <strong>${fmtD(f.event_date,45)}</strong></span></div>`;
+  const pc  = f.ponte_ok ? `<span class="ponte">🔗 ${f.ponte}</span>` : '';
+  const nt  = f.notes ? `<div class="cnotes">${f.notes}</div>` : '';
+  const acts= `<div class="card-actions"><button class="card-act-btn edit" onclick="openModal('feriado','${f.id}')" title="Editar">✏️</button></div>`;
+  return `<div class="card${f.status==='encerrado'?' enc':''}${f.status==='urgente'?' urg':''}${f.status==='atencao'?' atn':''}">
+    ${acts}<div class="cs ${sm.cls}"></div><div class="cb">
+    <div class="ct"><div class="cin"><span class="cemi">${f.emoji||'📅'}</span><div><div class="cname">${f.name}</div><div class="csub">${f.sub||''}</div></div></div>
+    <div class="cr"><div class="stars">${stars(f.stars||2)}</div>${badge(sm.label,sm.cls)}</div></div>
+    <div class="cmid"><span class="dchip">${f.date_label||genLabel(f.event_date)}</span><span class="wday">${getWday(f.event_date)}</span>${pc}</div>
+    <div class="cbot">${badge(tl,f.type)}${dl}</div>${nt}</div></div>`;
+}
+
+function renderCidade(c) {
+  const sm  = SM[c.status];
+  const dl  = c.status==='encerrado'
+    ? `<span class="enctxt">Janela encerrada</span>`
+    : `<div class="ccdl"><span>📋 <strong>${fmtD(c.event_date,60)}</strong></span><span>📣 <strong>${fmtD(c.event_date,45)}</strong></span></div>`;
+  const stb = (c.status!=='encerrado'&&c.status!=='ok') ? badge(sm.label,sm.cls) : '';
+  const nt  = c.notes ? `<div class="cnotes" style="font-size:10px;color:#5a7870;background:#e8f7f2;border-color:#2d8a6e;">${c.notes}</div>` : '';
+  const acts= `<div class="card-actions"><button class="card-act-btn edit" onclick="openModal('cidade','${c.id}')" title="Editar">✏️</button></div>`;
+  return `<div class="citycard${c.status==='encerrado'?' enc':''}${c.status==='urgente'?' urg':''}${c.status==='atencao'?' atn':''}">
+    ${acts}<div class="cstrip"></div><div class="ccbody">
+    <div class="cctop"><div><span class="ccname">🏙️ ${c.city}</span><span class="ccuf">${c.uf}</span></div>
+    <div class="ccright"><span class="ccrole">${c.role||''}</span>${stb}</div></div>
+    <div class="ccmid"><span class="ccdate">${c.date_label||genLabel(c.event_date)}</span><span class="ccwd">${getWday(c.event_date)}</span><span class="ccpop">👥 ${c.pop||''}</span></div>
+    ${dl}${nt}</div></div>`;
+}
+
+function renderMain() {
+  const ff = getFF(), fc = getFC();
+  const showCities = aTag!=='feriado' && aTag!=='comemorativa';
+  const rel = MONTHS.filter(m => ff.some(f=>getMonth(f.event_date)===m) || (showCities && fc.some(c=>getMonth(c.event_date)===m)));
+  if (!rel.length) { document.getElementById('main').innerHTML = '<div class="empty">Nenhuma data para os filtros selecionados.</div>'; return; }
+  let html = '';
+  rel.forEach(month => {
+    const mf = ff.filter(f=>getMonth(f.event_date)===month);
+    const mc = showCities ? fc.filter(c=>getMonth(c.event_date)===month) : [];
+    if (!mf.length && !mc.length) return;
+    const total  = mf.length + mc.length;
+    const hasUrg = mf.some(f=>f.status==='urgente') || mc.some(c=>c.status==='urgente');
+    const hasAtn = !hasUrg && (mf.some(f=>f.status==='atencao') || mc.some(c=>c.status==='atencao'));
+    const alert  = hasUrg ? `<span class="ma urg">⚡ PRODUÇÃO URGENTE</span>` : hasAtn ? `<span class="ma atn">⏳ INICIAR EM BREVE</span>` : '';
+    html += `<div class="mg"><div class="mh"><span class="mn">${month}</span><span class="mc">${total} data${total>1?'s':''}</span>${alert}</div>`;
+    if (mf.length) html += `<div class="grid">${mf.map(renderCard).join('')}</div>`;
+    if (mc.length) html += `<div class="csh">🏙️ Aniversários de cidades âncora — ${month}<button class="sec-add" onclick="openModal('cidade',null)">＋ Cidade</button></div><div class="grid">${mc.map(renderCidade).join('')}</div>`;
+    html += `</div>`;
+  });
+  html += `<div class="fnote"><span class="fni">📌</span><div><div class="fnt">Grande bloco estratégico: Junho–Julho</div><div class="fnb">Corpus Christi + Dia dos Namorados + Festas Juninas + Copa do Mundo + Férias Escolares + Feriado SP (9/Jul) + aniversários de Ribeirão Preto, Campinas e São José dos Campos criam <strong>~50 dias consecutivos</strong> de alta demanda. Uma campanha integrada é o maior gerador de receita do ano.</div></div></div>`;
+  document.getElementById('main').innerHTML = html;
+}
+
+// ── Edit mode ─────────────────────────────────────────────────────────────────
+function toggleEditMode() {
+  editMode = !editMode;
+  syncEditMode();
+}
+
+function syncEditMode() {
+  document.getElementById('editToggle').textContent = editMode ? '✓ Feito' : '✏️ Editar';
+  document.getElementById('editToggle').classList.toggle('active', editMode);
+  document.getElementById('fabWrap').style.display = editMode ? 'flex' : 'none';
+  document.body.classList.toggle('edit-mode', editMode);
+  document.querySelectorAll('.card,.citycard').forEach(el => el.classList.toggle('edit-mode', editMode));
+  // show/hide card-actions
+  document.querySelectorAll('.card-actions').forEach(el => {
+    el.style.display = editMode ? 'flex' : 'none';
+  });
+}
+
+// ── Modal ─────────────────────────────────────────────────────────────────────
+function openModal(type, id) {
+  modalCtx = { type, id };
+  const item = id ? (type==='feriado' ? feriados.find(f=>f.id===id) : cidades.find(c=>c.id===id)) : null;
+  document.getElementById('modalTitle').textContent = id
+    ? (type==='feriado' ? `Editar: ${item.name}` : `Editar: ${item.city}`)
+    : (type==='feriado' ? 'Nova data' : 'Nova cidade');
+  document.getElementById('modalSub').textContent = type==='feriado' ? 'Feriado ou data comemorativa' : 'Cidade âncora';
+  document.getElementById('modalDelBtn').style.display = id ? 'inline-flex' : 'none';
+  document.getElementById('modalDelBtn').textContent = '🗑️ Excluir';
+  document.getElementById('modalDelBtn').onclick = confirmDelete;
+  document.getElementById('modalSaveBtn').disabled = false;
+  document.getElementById('modalBody').innerHTML = type==='feriado' ? formFeriado(item) : formCidade(item);
+  initStarPicker(item?.stars || 2);
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  modalCtx = null;
+}
+
+function handleOverlayClick(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+function formFeriado(d) {
+  return `
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Nome *</label><input class="fi" id="f_name" value="${esc(d?.name||'')}" placeholder="Ex: Páscoa"></div>
+    <div class="fg"><label class="fl">Emoji</label><input class="fi" id="f_emoji" value="${esc(d?.emoji||'📅')}" placeholder="📅" style="max-width:80px"></div>
+  </div>
+  <div class="fg"><label class="fl">Descrição</label><input class="fi" id="f_sub" value="${esc(d?.sub||'')}" placeholder="Breve descrição da data"></div>
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Data do evento *</label><input class="fi" id="f_event_date" type="date" value="${d?.event_date||''}"></div>
+    <div class="fg"><label class="fl">Label de exibição</label><input class="fi" id="f_date_label" value="${esc(d?.date_label||'')}" placeholder="Ex: 03–05 Abr"></div>
+  </div>
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Tipo</label><select class="fi" id="f_type">
+      ${['nacional','estadual','municipal','comemorativa'].map(t=>`<option value="${t}"${d?.type===t?' selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}
+    </select></div>
+    <div class="fg"><label class="fl">Ponte</label><input class="fi" id="f_ponte" value="${esc(d?.ponte||'')}" placeholder="Ex: 3 dias"></div>
+  </div>
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Tem ponte?</label><select class="fi" id="f_ponte_ok">
+      <option value="true"${d?.ponte_ok?' selected':''}>Sim</option>
+      <option value="false"${!d?.ponte_ok?' selected':''}>Não</option>
+    </select></div>
+    <div class="fg"><label class="fl">Prioridade</label><div class="star-pick" id="starPick">
+      <button type="button" onclick="setStar(1)">★</button>
+      <button type="button" onclick="setStar(2)">★</button>
+      <button type="button" onclick="setStar(3)">★</button>
+    </div><input type="hidden" id="f_stars" value="${d?.stars||2}"></div>
+  </div>
+  <div class="fg"><label class="fl">Notas internas</label><textarea class="fi" id="f_notes" placeholder="Observações, contexto, instruções…">${esc(d?.notes||'')}</textarea></div>`;
+}
+
+function formCidade(d) {
+  return `
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Cidade *</label><input class="fi" id="c_city" value="${esc(d?.city||'')}" placeholder="Ex: Campinas"></div>
+    <div class="fg"><label class="fl">UF</label><input class="fi" id="c_uf" value="${esc(d?.uf||'')}" placeholder="SP"></div>
+  </div>
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Região / Papel</label><input class="fi" id="c_role" value="${esc(d?.role||'')}" placeholder="Ex: Âncora Campinas"></div>
+    <div class="fg"><label class="fl">População</label><input class="fi" id="c_pop" value="${esc(d?.pop||'')}" placeholder="Ex: 1,2M"></div>
+  </div>
+  <div class="fg-row">
+    <div class="fg"><label class="fl">Data do aniversário *</label><input class="fi" id="c_event_date" type="date" value="${d?.event_date||''}"></div>
+    <div class="fg"><label class="fl">Label de exibição</label><input class="fi" id="c_date_label" value="${esc(d?.date_label||'')}" placeholder="Ex: 14 Jul"></div>
+  </div>
+  <div class="fg"><label class="fl">Notas internas</label><textarea class="fi" id="c_notes" placeholder="Observações…">${esc(d?.notes||'')}</textarea></div>`;
+}
+
+function initStarPicker(val) {
+  const btns = document.querySelectorAll('#starPick button');
+  btns.forEach((b,i) => b.classList.toggle('on', i < val));
+}
+
+function setStar(n) {
+  document.getElementById('f_stars').value = n;
+  initStarPicker(n);
+}
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+
+// ── Save ──────────────────────────────────────────────────────────────────────
+async function saveModal() {
+  const btn = document.getElementById('modalSaveBtn');
+  btn.disabled = true; btn.textContent = 'Salvando…';
+  try {
+    if (modalCtx.type === 'feriado') await saveFeriado();
+    else await saveCidade();
+    closeModal();
+    await loadData();
+  } catch(e) {
+    alert('Erro ao salvar: ' + e.message);
+    btn.disabled = false; btn.textContent = 'Salvar';
+  }
+}
+
+async function saveFeriado() {
+  const name       = document.getElementById('f_name').value.trim();
+  const event_date = document.getElementById('f_event_date').value;
+  if (!name || !event_date) throw new Error('Nome e data são obrigatórios.');
+  const payload = {
+    name,
+    sub:        document.getElementById('f_sub').value.trim() || null,
+    event_date,
+    date_label: document.getElementById('f_date_label').value.trim() || genLabel(event_date),
+    type:       document.getElementById('f_type').value,
+    ponte:      document.getElementById('f_ponte').value.trim() || null,
+    ponte_ok:   document.getElementById('f_ponte_ok').value === 'true',
+    stars:      parseInt(document.getElementById('f_stars').value),
+    emoji:      document.getElementById('f_emoji').value.trim() || '📅',
+    notes:      document.getElementById('f_notes').value.trim() || null,
+    updated_at: new Date().toISOString(),
+  };
+  const { error } = modalCtx.id
+    ? await sb.from('feriados').update(payload).eq('id', modalCtx.id)
+    : await sb.from('feriados').insert(payload);
+  if (error) throw new Error(error.message);
+}
+
+async function saveCidade() {
+  const city       = document.getElementById('c_city').value.trim();
+  const event_date = document.getElementById('c_event_date').value;
+  const uf         = document.getElementById('c_uf').value.trim();
+  if (!city || !event_date || !uf) throw new Error('Cidade, UF e data são obrigatórios.');
+  const payload = {
+    city,
+    uf,
+    pop:        document.getElementById('c_pop').value.trim() || null,
+    role:       document.getElementById('c_role').value.trim() || null,
+    event_date,
+    date_label: document.getElementById('c_date_label').value.trim() || genLabel(event_date),
+    notes:      document.getElementById('c_notes').value.trim() || null,
+    updated_at: new Date().toISOString(),
+  };
+  const { error } = modalCtx.id
+    ? await sb.from('cidades').update(payload).eq('id', modalCtx.id)
+    : await sb.from('cidades').insert(payload);
+  if (error) throw new Error(error.message);
+}
+
+// ── Delete ────────────────────────────────────────────────────────────────────
+function confirmDelete() {
+  const btn = document.getElementById('modalDelBtn');
+  if (btn.textContent.includes('Confirmar')) {
+    doDelete();
+  } else {
+    btn.textContent = '⚠️ Confirmar exclusão';
+    btn.onclick = doDelete;
+  }
+}
+
+async function doDelete() {
+  const btn = document.getElementById('modalDelBtn');
+  btn.disabled = true; btn.textContent = 'Excluindo…';
+  const table = modalCtx.type === 'feriado' ? 'feriados' : 'cidades';
+  const { error } = await sb.from(table).delete().eq('id', modalCtx.id);
+  if (error) { alert('Erro ao excluir: ' + error.message); btn.disabled = false; return; }
+  closeModal();
+  await loadData();
+}
+
+// ── Filter handlers ───────────────────────────────────────────────────────────
+function setTag(t) { aTag = t; renderFilters(); renderMain(); syncEditMode(); }
+function setMon(m) { aMon = m; renderFilters(); renderMain(); syncEditMode(); }
+
+loadData();
+</script>
+</body>
+</html>
